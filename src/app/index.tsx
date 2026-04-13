@@ -1,14 +1,67 @@
-import { ThemedText } from "@/components/themed-text";
-import { ThemedView } from "@/components/themed-view";
-import { BottomTabInset, MaxContentWidth, Spacing } from "@/constants/theme";
-import { StyleSheet } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {ThemedView} from "@/components/themed-view";
+import {TextInput} from "@/components/ui/text-input";
+import {BottomTabInset, MaxContentWidth, Spacing} from "@/constants/theme";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {Controller, useForm} from "react-hook-form";
+import {useTranslation} from "react-i18next";
+import {StyleSheet} from "react-native";
+import {SafeAreaView} from "react-native-safe-area-context";
+import * as z from "zod";
+
+const formSchema = z.object({
+  firstname: z.string(),
+  name: z.string(),
+  email: z.email(),
+  phone: z.string().optional(),
+});
 
 export default function HomeScreen() {
+  const {t} = useTranslation();
+
+  const {control, handleSubmit} = useForm({
+    resolver: zodResolver(formSchema),
+  });
+
+  function handleSubmitForm(data: z.infer<typeof formSchema>) {
+    console.log(data);
+  }
+
   return (
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
-        <ThemedText>Hello</ThemedText>
+        <Controller
+          control={control}
+          name="firstname"
+          render={({field: {onChange, value}}) => (
+            <TextInput
+              label={`${t("Firstname")} *`}
+              value={value}
+              onChange={onChange}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name="firstname"
+          render={({field: {onChange, value}}) => (
+            <TextInput
+              label={`${t("Name")} *`}
+              value={value}
+              onChange={onChange}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name="firstname"
+          render={({field: {onChange, value}}) => (
+            <TextInput
+              label={`${t("Email")} *`}
+              value={value}
+              onChange={onChange}
+            />
+          )}
+        />
       </SafeAreaView>
     </ThemedView>
   );
